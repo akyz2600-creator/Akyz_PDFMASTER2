@@ -1,0 +1,28 @@
+name: Crear APK de Akyz_PDFMASTER
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Construir APK con Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        with:
+          workdir: .
+          buildozer_version: stable
+          command: buildozer android debug
+
+      - name: Publicar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Akyz-PDFMASTER-APK
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 7
